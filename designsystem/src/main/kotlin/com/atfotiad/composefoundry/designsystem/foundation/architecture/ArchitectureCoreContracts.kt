@@ -124,3 +124,38 @@ sealed interface StandardUiState<out T> : UiState {
     val dataOrNull: T?
         get() = (this as? Success<T>)?.data
 }
+
+/**
+ * 🚀 StandardViewModel: A specialized BaseViewModel for the 90% of screens
+ * that follow the Loading -> Success -> Error pattern.
+ *
+ * It enforces [StandardUiState] as the state type and defaults to [StandardUiState.Loading].
+ */
+abstract class StandardViewModel<T, E : UiEffect>(
+    initialData: T? = null
+) : BaseViewModel<StandardUiState<T>, E>(
+    initialState = if (initialData == null) StandardUiState.Loading else StandardUiState.Success(initialData)
+) {
+    /**
+     * Optional helper: Update data while staying in Success state
+     */
+    protected fun updateData(reducer: T.() -> T) {
+        setState {
+            if (this is StandardUiState.Success) {
+                copy(data = data.reducer())
+            } else this
+        }
+    }
+    /**
+     * 🔄 setRefreshing: Keeps current data but sets 'isRefreshing' to true.
+     * Use this for background API calls (like a Download toggle).
+     */
+    protected fun setRefreshing(isRefreshing: Boolean) {
+        setState {
+            if (this is StandardUiState.Success) {
+                copy(isRefreshing = isRefreshing)
+            } else this
+        }
+    }
+
+}

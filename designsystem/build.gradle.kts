@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     // 6. KSP (Using Alias)
     alias(libs.plugins.ksp)
+    id("maven-publish")
 
 }
 
@@ -40,6 +41,21 @@ android {
         compose = true
     }
 }
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                // For Android libraries, we use the 'release' component
+                from(components["release"])
+
+                groupId = "com.github.atfotiad"
+                artifactId = "designsystem"
+                version = "1.0.0-alpha"
+            }
+        }
+    }
+}
+
 
 dependencies {
     api(project(":annotations"))

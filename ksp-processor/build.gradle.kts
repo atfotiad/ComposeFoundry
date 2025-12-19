@@ -1,6 +1,18 @@
 plugins {
     // 1. This must be a standard Kotlin JVM module
     alias(libs.plugins.kotlin.jvm)
+    id("maven-publish")
+}
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"]) // 👈 Note: 'java' here for JVM modules
+
+            groupId = "com.github.atfotiad"
+            artifactId = name // Uses the folder name (annotations or ksp-processor)
+            version = "1.0.0-alpha"
+        }
+    }
 }
 
 dependencies {
