@@ -12,7 +12,7 @@ publishing {
 
             groupId = "com.github.atfotiad"
             artifactId = name // Uses the folder name (annotations or ksp-processor)
-            version = "1.0.0-alpha"
+            version = project.version.toString()
         }
     }
 }

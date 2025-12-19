@@ -50,7 +50,7 @@ afterEvaluate {
 
                 groupId = "com.github.atfotiad"
                 artifactId = "designsystem"
-                version = "1.0.0-alpha"
+                version = project.version.toString()
             }
         }
     }
