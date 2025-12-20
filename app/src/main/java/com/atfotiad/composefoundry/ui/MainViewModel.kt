@@ -2,7 +2,7 @@ package com.atfotiad.composefoundry.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.atfotiad.composefoundry.data.local.datastore.StorageManager
+import com.atfotiad.composefoundry.core.data.local.datastore.StorageManager
 import com.atfotiad.composefoundry.navigation.Destinations
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted

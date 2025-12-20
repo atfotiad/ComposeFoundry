@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * 🧱 UiState: The "One StateUI Class" marker interface.
+ *  UiState: The "One StateUI Class" marker interface.
  *
  * This contract enforces that every data class defining the state of a screen (e.g.,
  * LoginState, ProfileViewState) must implement this interface. This is the single,
@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 interface UiState
 
 /**
- * 💥 UiEffect: Marker interface for all one-time UI Side Effects.
+ *  UiEffect: Marker interface for all one-time UI Side Effects.
  *
  * This contract is essential for MVVM cleanup, ensuring transient actions (navigation,
  * toasts, snackbars, dialogs) are handled safely via a SharedFlow, preventing
@@ -30,7 +30,7 @@ interface UiState
 interface UiEffect
 
 /**
- * 🧠 BaseViewModel: The MVVM Standardization Contract.
+ *  BaseViewModel: The MVVM Standardization Contract.
  *
  * All ViewModels in the application MUST extend this class. It enforces the exposure
  * of the two necessary streams for a Reactive MVVM/UDF (Unidirectional Data Flow) architecture.
@@ -60,16 +60,16 @@ abstract class BaseViewModel<S : UiState, E : UiEffect>(
     val effect: Flow<E> = _effect.receiveAsFlow()
 
     /**
-     * 🔄 Helper to update the UI State safely and atomically.
+     * Helper to update the UI State safely and atomically.
      *
-     * Usage:     * setState { copy(isLoading = true) }
+     * Usage:  * setState { copy(isLoading = true) }
      */
     protected fun setState(reducer: S.() -> S) {
         _state.update(reducer)
     }
 
     /**
-     * 🚀 Helper to fire a Side Effect (Navigation, Toast, etc).
+     * Helper to fire a Side Effect (Navigation, Toast, etc).
      *
      * Usage:
      * sendEffect(LoginEffect.NavigateHome)
@@ -89,7 +89,7 @@ abstract class BaseViewModel<S : UiState, E : UiEffect>(
 }
 
 /**
- * 🏗️ StandardUiState: A specific UiState implementation for screens
+ * StandardUiState: A specific UiState implementation for screens
  * that follow the strict Loading -> Content -> Error pattern.
  *
  * This uses a Sealed Interface to enforce mutually exclusive states.
@@ -97,12 +97,12 @@ abstract class BaseViewModel<S : UiState, E : UiEffect>(
 sealed interface StandardUiState<out T> : UiState {
 
     /**
-     * ⏳ Loading: The screen is initializing or fetching data.
+     * Loading: The screen is initializing or fetching data.
      */
     data object Loading : StandardUiState<Nothing>
 
     /**
-     * ✅ Success: The screen is showing content.
+     * Success: The screen is showing content.
      * @param data The main data model for the screen.
      */
     data class Success<out T>(
@@ -111,7 +111,7 @@ sealed interface StandardUiState<out T> : UiState {
     ) : StandardUiState<T>
 
     /**
-     * ❌ Error: The operation failed.
+     * Error: The operation failed.
      */
     data class Error(
         val message: UiText,
@@ -123,10 +123,13 @@ sealed interface StandardUiState<out T> : UiState {
 
     val dataOrNull: T?
         get() = (this as? Success<T>)?.data
+
+    val errorMessage: UiText?
+        get() = (this as? Error)?.message
 }
 
 /**
- * 🚀 StandardViewModel: A specialized BaseViewModel for the 90% of screens
+ * StandardViewModel: A specialized BaseViewModel for the 90% of screens
  * that follow the Loading -> Success -> Error pattern.
  *
  * It enforces [StandardUiState] as the state type and defaults to [StandardUiState.Loading].
@@ -147,7 +150,7 @@ abstract class StandardViewModel<T, E : UiEffect>(
         }
     }
     /**
-     * 🔄 setRefreshing: Keeps current data but sets 'isRefreshing' to true.
+     * Optional helper: setRefreshing: Keeps current data but sets 'isRefreshing' to true.
      * Use this for background API calls (like a Download toggle).
      */
     protected fun setRefreshing(isRefreshing: Boolean) {

@@ -10,12 +10,17 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.atfotiad.composefoundry.annotations.ComposeFoundryNavigation
 import com.atfotiad.composefoundry.annotations.NavigationStrategy
+import com.atfotiad.composefoundry.designsystem.network.NetworkMonitor
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 @ComposeFoundryNavigation(strategy = NavigationStrategy.JetpackCompose)
 class MainActivity : ComponentActivity() {
     val viewModel: MainViewModel by viewModels()
+
+    @Inject
+    lateinit var networkMonitor: NetworkMonitor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -28,7 +33,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            AppContent(uiState)
+            AppContent(uiState, networkMonitor)
         }
     }
 }
