@@ -3,7 +3,9 @@ package com.atfotiad.composefoundry.features.counter.ui
 import androidx.lifecycle.viewModelScope
 import com.atfotiad.composefoundry.designsystem.foundation.architecture.BaseViewModel
 import com.atfotiad.composefoundry.designsystem.foundation.architecture.StandardUiState
+import com.atfotiad.composefoundry.designsystem.foundation.resources.UiText
 import com.atfotiad.composefoundry.designsystem.network.NetworkResult
+import com.atfotiad.composefoundry.designsystem.network.asUiState
 import com.atfotiad.composefoundry.features.counter.repository.CounterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -38,10 +40,13 @@ class CounterViewModel @Inject constructor(
 
             if (result is NetworkResult.Failure) {
                 // If network fails, show an effect (Toast) but keep showing old DB data
-                sendEffect(CounterEffect.ShowToast("Offline Mode: Could not sync"))
+                val message = result.asUiState().errorMessage
+                    ?: UiText.DynamicString("Offline Mode: Could not sync")
+                sendEffect(CounterEffect.ShowToast(message))
             }
         }
     }
+
     fun increment() {
         viewModelScope.launch {
             repository.incrementLocally()
