@@ -14,5 +14,6 @@ data class LoginState(
 
 sealed interface LoginEffect : UiEffect {
     data object NavigateToHome : LoginEffect
+    data object NavigateToGame : LoginEffect
     data class ShowError(val message: String) : LoginEffect
 }

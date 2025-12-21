@@ -2,6 +2,7 @@ package com.atfotiad.composefoundry.core.di
 
 
 import com.atfotiad.composefoundry.core.data.local.datastore.StorageManager
+import com.atfotiad.composefoundry.features.blackjack.data.api.BlackjackApi
 import com.atfotiad.composefoundry.features.counter.api.CounterApi
 import dagger.Module
 import dagger.Provides
@@ -74,7 +75,7 @@ object NetworkModule {
         val contentType = "application/json".toMediaType()
 
         return Retrofit.Builder()
-            .baseUrl("https://httpbin.org/")
+            .baseUrl("https://jsonplaceholder.typicode.com/")
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()
@@ -84,6 +85,12 @@ object NetworkModule {
     @Singleton
     fun provideCounterApi(retrofit: Retrofit): CounterApi {
         return retrofit.create(CounterApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBlackjackApi(retrofit: Retrofit): BlackjackApi {
+        return retrofit.create(BlackjackApi::class.java)
     }
 
 }

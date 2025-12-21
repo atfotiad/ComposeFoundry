@@ -17,11 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.atfotiad.composefoundry.annotations.Destination
-import com.atfotiad.composefoundry.designsystem.foundation.architecture.StandardUiState
 import com.atfotiad.composefoundry.designsystem.components.feedback.FoundryStateWrapper
-import com.atfotiad.composefoundry.designsystem.foundation.theme.spacing
 import com.atfotiad.composefoundry.designsystem.foundation.architecture.collectAsEffect
 import com.atfotiad.composefoundry.designsystem.foundation.architecture.collectAsSafeState
+import com.atfotiad.composefoundry.designsystem.foundation.theme.spacing
 import com.atfotiad.composefoundry.navigation.Destinations
 import com.atfotiad.composefoundry.ui.LocalNavController
 
@@ -31,7 +30,7 @@ fun CounterScreen(
     viewModel: CounterViewModel = hiltViewModel()
 ) {
     // Collect State Safely (Lifecycle aware)
-    val state by viewModel.state.collectAsSafeState(StandardUiState.Loading)
+    val state by viewModel.state.collectAsSafeState()
 
     val context = LocalContext.current
     val navController = LocalNavController.current

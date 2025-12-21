@@ -1,6 +1,12 @@
 package com.atfotiad.composefoundry.features.login.ui
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -14,14 +20,29 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.atfotiad.composefoundry.annotations.Destination
 import com.atfotiad.composefoundry.designsystem.components.inputs.FoundryTextField
-import com.atfotiad.composefoundry.designsystem.foundation.architecture.collectAsSafeState
+import com.atfotiad.composefoundry.designsystem.foundation.architecture.collectAsEffect
+import com.atfotiad.composefoundry.designsystem.foundation.architecture.collectAsSimpleState
 
 @Destination(route = "login", isTopLevel = true)
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsSafeState(initialValue = LoginState())
+    val state by viewModel.state.collectAsSimpleState()
+
+    // Handle login effects
+    viewModel.effect.collectAsEffect { effect ->
+        when (effect) {
+            is LoginEffect.NavigateToGame -> {
+                 //navController.navigate("blackjack")
+            }
+            is LoginEffect.ShowError -> {
+                // Show Toast
+            }
+
+            else -> {}
+        }
+    }
 
     Column(
         modifier = Modifier
