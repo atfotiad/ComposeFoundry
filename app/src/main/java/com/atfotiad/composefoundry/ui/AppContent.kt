@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.CircularProgressIndicator
@@ -32,15 +31,15 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.atfotiad.composefoundry.BuildConfig
+import com.atfotiad.composefoundry.core.notifications.NotificationPermissionEffect
 import com.atfotiad.composefoundry.designsystem.components.feedback.FoundryConnectivityBanner
 import com.atfotiad.composefoundry.designsystem.foundation.theme.FoundryTheme
 import com.atfotiad.composefoundry.designsystem.network.NetworkMonitor
+import com.atfotiad.composefoundry.navigation.AppNavHost
 import com.atfotiad.composefoundry.navigation.Destinations
 import com.atfotiad.composefoundry.navigation.getIcon
 import com.atfotiad.composefoundry.navigation.getLabel
 import com.atfotiad.composefoundry.network.OfflineBanner
-import com.atfotiad.composefoundry.core.notifications.NotificationPermissionEffect
-import com.atfotiad.composefoundry.navigation.AppNavHost
 import com.atfotiad.composefoundry.ui.debug.DebugOverlay
 import com.atfotiad.composefoundry.ui.debug.DebugViewModel
 import com.atfotiad.composefoundry.ui.theme.BrandLightScheme
