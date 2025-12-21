@@ -29,6 +29,16 @@ class NetworkMonitor @Inject constructor(
                 trySend(true)
             }
 
+            override fun onCapabilitiesChanged(
+                network: Network,
+                networkCapabilities: NetworkCapabilities
+            ) {
+                super.onCapabilitiesChanged(network, networkCapabilities)
+                val connected = networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                        networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+                trySend(connected)
+            }
+
             override fun onLost(network: Network) {
                 trySend(false)
             }
@@ -49,9 +59,9 @@ class NetworkMonitor @Inject constructor(
     }.distinctUntilChanged()
 
     private fun checkCurrentNetwork(): Boolean {
-        return connectivityManager.activeNetwork?.let {
-            connectivityManager.getNetworkCapabilities(it)
-                ?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-        } ?: false
+        val activeNetwork = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
 }

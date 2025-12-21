@@ -3,6 +3,8 @@ package com.atfotiad.composefoundry.core.data.local.datastore
 import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,9 +21,13 @@ class StorageManager @Inject constructor(
     val themeMode: Flow<String> = appSettings.map { it.themeMode }
     val apiEnvironment: Flow<String> = appSettings.map { it.apiEnvironment }
 
+    val mutex = Mutex()
+
     // Unified update function
     suspend fun update(action: (AppSettings) -> AppSettings) {
-        dataStore.updateData(action)
+        mutex.withLock {
+            dataStore.updateData(action)
+        }
     }
 
     // Helper functions

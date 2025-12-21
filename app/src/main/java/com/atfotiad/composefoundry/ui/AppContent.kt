@@ -3,8 +3,15 @@ package com.atfotiad.composefoundry.ui
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -102,7 +109,10 @@ fun AppContent(
                         Scaffold(
                             topBar = {
                                 Column(
-                                    modifier = Modifier.pointerInput(Unit) {
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(IntrinsicSize.Min)
+                                        .pointerInput(Unit) {
                                         detectTapGestures(
                                             onLongPress = {
                                                 // Only trigger if this is a DEBUG build
@@ -112,6 +122,7 @@ fun AppContent(
                                             }
                                         )
                                     }
+                                        .windowInsetsPadding(WindowInsets.statusBars)
                                 ) {
                                     FoundryConnectivityBanner(
                                         isVisible = !isOnline,
