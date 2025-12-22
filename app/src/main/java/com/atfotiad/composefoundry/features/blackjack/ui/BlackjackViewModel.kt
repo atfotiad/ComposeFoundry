@@ -2,6 +2,7 @@ package com.atfotiad.composefoundry.features.blackjack.ui
 
 import androidx.lifecycle.viewModelScope
 import com.atfotiad.composefoundry.designsystem.foundation.architecture.StandardViewModel
+import com.atfotiad.composefoundry.designsystem.foundation.resources.UiText
 import com.atfotiad.composefoundry.designsystem.network.dataOrNull
 import com.atfotiad.composefoundry.features.blackjack.data.repository.BlackjackRepository
 import com.atfotiad.composefoundry.features.blackjack.domain.Card
@@ -68,6 +69,7 @@ class BlackjackViewModel @Inject constructor(
             hitPlayer()
             delay(300)
             hitPlayer()
+            if (currentState.dataOrNull?.playerScore == 21) {determineWinner()}
             sendEffect(BlackjackEffect.PlayDealSound)
         }
     }
@@ -83,6 +85,13 @@ class BlackjackViewModel @Inject constructor(
                 playerScore = newScore,
                 gameStatus = if (newScore > 21) GameStatus.BUSTED else GameStatus.PLAYING
             )
+        }
+
+        val score = currentState.dataOrNull?.playerScore ?: 0
+        if (score == 21) {
+            determineWinner()
+        } else if (score > 21) {
+            determineWinner()
         }
     }
 
@@ -133,16 +142,39 @@ class BlackjackViewModel @Inject constructor(
     }
 
     private fun determineWinner() {
-        val pScore = currentState.dataOrNull?.playerScore ?: 0
-        val dScore = currentState.dataOrNull?.dealerScore ?: 0
+        updateData {
+            val pScore = playerScore
+            val dScore = dealerScore
 
-        val finalStatus = when {
-            dScore > 21 -> GameStatus.PLAYER_WON
-            pScore > dScore -> GameStatus.PLAYER_WON
-            pScore < dScore -> GameStatus.DEALER_WON
-            else -> GameStatus.PUSH
+            val finalStatus = when {
+                pScore > 21 -> GameStatus.BUSTED
+                dScore > 21 -> GameStatus.PLAYER_WON
+
+                //  Scores are equal -> PUSH (Tie)
+                pScore == dScore -> GameStatus.PUSH
+
+                // Higher score wins
+                pScore > dScore -> GameStatus.PLAYER_WON
+                else -> GameStatus.DEALER_WON
+            }
+
+            // Send effect to UI
+            val resultMessage = when(finalStatus) {
+                GameStatus.PLAYER_WON -> {
+                    if (pScore == 21) {
+                        "Blackjack! 🎉"
+                    } else {
+                        "You Won! 🎉"
+                    }
+                }
+                GameStatus.DEALER_WON -> "Dealer Wins 🏦"
+                GameStatus.PUSH -> "It's a Tie! 🤝"
+                GameStatus.BUSTED -> "Busted! 💥"
+                else -> ""
+            }
+            sendEffect(BlackjackEffect.ShowResult(UiText.DynamicString(resultMessage)))
+
+            copy(gameStatus = finalStatus)
         }
-
-        updateData { copy(gameStatus = finalStatus) }
     }
 }

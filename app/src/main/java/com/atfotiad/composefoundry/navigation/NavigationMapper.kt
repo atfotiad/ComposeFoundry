@@ -21,8 +21,8 @@ fun Destinations.getIcon(): ImageVector {
 
 fun Destinations.getLabel(): String {
     return when (this) {
-        is Destinations.CounterScreen -> "Counter"
-        is Destinations.BlackjackScreen -> "Blackjack"
+        is Destinations.CounterScreen -> "Foundry Sync"
+        is Destinations.BlackjackScreen -> "Casino Demo"
         // Add more as you create screens
         else -> ""
     }
