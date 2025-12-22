@@ -29,6 +29,7 @@ class CryptoManager {
             it.write(encryptCipher.iv)
             it.write(encryptedBytes.size)
             it.write(encryptedBytes)
+            it.flush()
         }
     }
 
