@@ -132,7 +132,7 @@ class BlackjackViewModel @Inject constructor(
 
     private fun dealCardToDealer() {
         updateData {
-            val card = Card(Rank.entries.random(), Suit.entries.random())
+            val card = drawCard()
             val newHand = dealerHand + card
             copy(
                 dealerHand = newHand,
@@ -142,18 +142,16 @@ class BlackjackViewModel @Inject constructor(
     }
 
     private fun determineWinner() {
-        updateData {
-            val pScore = playerScore
-            val dScore = dealerScore
 
-            val finalStatus = when {
+        val pScore = currentState.dataOrNull?.playerScore ?: 0
+        val dScore = currentState.dataOrNull?.dealerScore ?: 0
+        val pHandSize = currentState.dataOrNull?.playerHand?.size ?: 0
+
+
+        val finalStatus = when {
                 pScore > 21 -> GameStatus.BUSTED
                 dScore > 21 -> GameStatus.PLAYER_WON
-
-                //  Scores are equal -> PUSH (Tie)
                 pScore == dScore -> GameStatus.PUSH
-
-                // Higher score wins
                 pScore > dScore -> GameStatus.PLAYER_WON
                 else -> GameStatus.DEALER_WON
             }
@@ -161,7 +159,7 @@ class BlackjackViewModel @Inject constructor(
             // Send effect to UI
             val resultMessage = when(finalStatus) {
                 GameStatus.PLAYER_WON -> {
-                    if (pScore == 21) {
+                    if (pScore == 21 && pHandSize == 2) {
                         "Blackjack! 🎉"
                     } else {
                         "You Won! 🎉"
@@ -174,6 +172,7 @@ class BlackjackViewModel @Inject constructor(
             }
             sendEffect(BlackjackEffect.ShowResult(UiText.DynamicString(resultMessage)))
 
+        updateData {
             copy(gameStatus = finalStatus)
         }
     }
