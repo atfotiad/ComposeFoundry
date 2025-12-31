@@ -1,6 +1,5 @@
-package com.atfotiad.composefoundry.core.data.local.datastore
+package com.atfotiad.composefoundry.designsystem.foundation.storage
 
-import com.atfotiad.composefoundry.designsystem.foundation.storage.EncryptedSerializer
 import kotlinx.serialization.Serializable
 
 // 1. Define ALL your app data here. Everything will be encrypted.
