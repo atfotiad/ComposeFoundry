@@ -3,7 +3,7 @@ package com.atfotiad.composefoundry.ui.debug
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.atfotiad.composefoundry.core.data.local.datastore.StorageManager
+import com.atfotiad.composefoundry.designsystem.foundation.storage.StorageManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
