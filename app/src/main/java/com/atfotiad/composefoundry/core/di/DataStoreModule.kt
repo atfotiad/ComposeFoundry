@@ -3,8 +3,8 @@ package com.atfotiad.composefoundry.core.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
-import com.atfotiad.composefoundry.core.data.local.datastore.AppSettings
-import com.atfotiad.composefoundry.core.data.local.datastore.AppSettingsSerializer
+import com.atfotiad.composefoundry.designsystem.foundation.storage.AppSettings
+import com.atfotiad.composefoundry.designsystem.foundation.storage.AppSettingsSerializer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,7 +1,7 @@
 package com.atfotiad.composefoundry.core.di
 
 
-import com.atfotiad.composefoundry.core.data.local.datastore.StorageManager
+import com.atfotiad.composefoundry.designsystem.foundation.storage.StorageManager
 import com.atfotiad.composefoundry.features.blackjack.data.api.BlackjackApi
 import com.atfotiad.composefoundry.features.counter.api.CounterApi
 import dagger.Module
